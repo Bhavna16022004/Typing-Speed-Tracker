@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Test</title>
+    <style>
+        .correct { color: green; }
+        .incorrect { color: red; }
+        .container { text-align: center; }
+        .action-btn { margin: 10px; }
+        #start-btn { display: none; } /* Hide start button */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: aqua;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            background-color: rgb(147, 202, 202);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 850px;
+            margin-top:10px;
+
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .settings {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        select, button {
+            padding: 5px;
+            margin: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            width: 200px;
+            cursor: pointer;
+         } 
+
+        .settings button:disabled {
+            background-color: #5d7b94;
+            cursor: not-allowed;
+        }
+
+        .timer-container {
+            text-align: right;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .test-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    #text-to-type {
+    width: 100%; /* Adjust based on your layout */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    font-size: 23px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    overflow: hidden;
+    height: 200px;
+    overflow-y: auto;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+}
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+
+        #results {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        #wmp {
+            align-self: flex-start;
+        }
+
+        #accuracy {
+            align-self: flex-end;
+        }
+
+       
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+            text-decoration: underline;
+        }
+
+        #wmp, #accuracy {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            color: black;
+        }
+
+        .action-btn {
+         
+            height: 40px;
+      width: 150px;
+      background-color: rgb(54, 118, 118);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+      font-weight: bold;
+        }
+
+        .action-btn:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        /* Aligning buttons next to each other */
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .action-btn:hover {
+      background-color: rgb(89, 100, 221);
+    }
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            select, button {
+                width: 100%;
+            }
+        }
+
+
+body.dark-mode {
+      background-color: #121212;
+      color: white;
+    }
+
+    .header {
+        width: 100%;
+      background: rgb(42, 42, 4);
+      color: white;
+      text-shadow: 2px 3px 4px #070707;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    #darkModeToggle:hover {
+      background-color: teal;
+    }
+    .home{
+        background-color: #fbf7f7;
+        color: #0c0c0c;
+        border: none;
+       height: 35px;
+       width: 100px;
+        border-radius: 10px;
+        margin: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s;
+    }
+
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Typing Speed Tracker</h1>
+        <a href="index.html"><button class="home">Home</button></a>
+        <button class="home" id="darkModeToggle">Dark</button>
+
+    </header>
+    <div class="container">
+        <!-- <a href="page1.html"><button class="home">Home</button></a> -->
+        <h1 style="color: black;">Check your typing skills in a minute</h1>
+        <div class="settings">
+            <label for="duration" style="font-size: 20px; font-weight: bold; color: #070707;">Time Duration:</label>
+            <select id="duration">
+                <option value="1">1 Minute</option>
+                <option value="2">2 Minutes</option>
+                <option value="3">3 Minutes</option>
+                <option value="5">5 Minutes</option>
+                <option value="10">10 Minutes</option>
+            </select>
+        </div>
+        <div class="timer-container">
+            <p id="timer">Time Left: 0:00</p>
+        </div>
+        <div class="test-area">
+            <p id="text-to-type">   </p>
+            <textarea id="typing-input" placeholder="Start typing here..." disabled></textarea>
+            <div id="results">
+                <div id="wmp">WPM: 0</div>
+                <div id="accuracy">Accuracy: 0%</div>
+            </div>
+            <div class="action-btns">
+                <button id="reset-btn" class="action-btn" onclick="resetTest()" disabled>Restart</button>
+            </div>
+        </div>
+    </div>
+    <script>
+let paragraphs = {
+    1: ["Quite a long time ago, there lived two talking birds with their parents. One day.     they decided to explore the forest nearby. They discovered a hidden treasure chest buried under an old oak tree. This story is engaging yet easy to type, with simple vocabulary and a flow that allows users to enjoy the test. Would you like me to replace the current sample text in your code with this story? "],
+    2: [" Once upon a time, there was a little cat named Milo. Milo loved to play in the garden every morning. One day, he saw a butterfly with bright yellow wings. He tried to catch it, but the butterfly was too quick. Milo chased it across the flowers, jumping and running. Finally, he stopped and sat under a tree. The butterfly came back and rested on his nose. Milo was happy and purred softly. From that day, they became friends, and every morning, they played together in the garden. We’ll delve into 12 comprehensive topics, building on what you’ve already explored in Module 3.     They’ll help you understand the nuances of advanced typing techniques, improve your speed, and enhance your accuracy. By the end of this module, you’ll be equipped with the skills to type efficiently and effectively. Let’s get started and take your typing skills to the next level! "],
+    3: ["An explorer once ran over the other bird that the villager caught.     They embarked on a journey to find the lost city of Atlantis. Along the way, they encountered various challenges, including deciphering ancient codes and navigating treacherous waters. Despite the odds, they persevered and eventually discovered the city's hidden entrance. Inside, they found artifacts and treasures beyond their wildest dreams, guarded by intricate traps and puzzles."],
+    5: ["In the midst of a sprawling desert, an oasis shimmered like a mirage, offering solace to weary travelers.     In the midst of a sprawling desert, an oasis shimmered like a mirage, offering solace to weary travelers. The oasis, known as El-Zahara, was a sanctuary for those who braved the harsh sands. It was said that the waters of El-Zahara had healing properties, rejuvenating both body and spirit. Travelers from distant lands would journey for days, guided by the stars and the promise of respite. The oasis was guarded by ancient statues, their eyes seemingly watching over the visitors. At night, the oasis would come alive with the sounds of nature, a stark contrast to the silent desert. The legend of El-Zahara was passed down through generations, a beacon of hope in the vast, unforgiving desert. "],
+    8: ["The quick brown fox jumps over the lazy dog 1234! @#$%^&*()_+[]{}|;:',.<>?/~`     The quick brown fox jumps over the lazy dog 1234! @#$%^&*()_+[]{}|;:',.<>?/~` The rain in Spain stays mainly in the plain. 5678! @#$%^&*()_+[]{}|;:',.<>?/~` She sells seashells by the seashore. 91011! @#$%^&*()_+[]{}|;:',.<>?/~`"],
+    10: ["Nestled high in the mountains, a remote village thrived. Here's a revised version of the paragraph with more numbers and symbols included:In a bustling marketplace, vendors shouted to advertise their wares—fresh fruits, handmade jewelry, and colorful fabrics. A little girl with pigtails clutched a red balloon, her laughter echoing amidst the chatter. Nearby, an old man played a soulful tune on his harmonica, a small tin for tips ($5, $10, $20) resting at his feet. The scent of roasted coffee ($3.50) mingled with the aroma of freshly baked bread, creating an irresistible allure. A couple argued over the price of a rare antique vase, 30% off the usual price of $120, while a group of teenagers debated which food stall to try first. Amidst the vibrant chaos, a stray cat weaved between people’s legs, unnoticed but content. The clock struck 12:00, signaling the midday rush as more shoppers arrived, eager to grab the best deals of the day, including a 50% off promotion on sunglasses at the shop next door. "]
+};
+
+let selectedDuration = 1; // Default duration for the typing test is 1 minute.
+let timerInterval; // Variable to store the interval for the timer.
+let timeLeft = selectedDuration * 60; // Calculates the total time left in seconds.
+let isTestRunning = false; // Flag to indicate if the typing test is currently running.
+let totalWordsTyped = 0; // Keeps track of the total number of words typed.
+let correctWords = 0; // Tracks the number of correctly typed words.
+let incorrectWords = 0; // Tracks the number of incorrectly typed words.
+let currentTextIndex = 0; // Index for the current paragraph from the `paragraphs` object.
+
+const resetBtn = document.getElementById('reset-btn'); // Selects the reset button element.
+const timerElement = document.getElementById('timer'); // Selects the timer display element.
+const typingInput = document.getElementById('typing-input'); // Selects the input element for typing.
+const wpmElement = document.getElementById('wmp'); // Selects the element displaying Words Per Minute (WPM).
+const accuracyElement = document.getElementById('accuracy'); // Selects the element displaying accuracy percentage.
+const textToTypeElement = document.getElementById('text-to-type'); // Selects the element showing the text to type.
+
+// Initialize the default typing test when the page loads.
+function initializeDefaultTest() {
+    textToTypeElement.innerText = paragraphs[selectedDuration][0]; // Displays the default paragraph.
+    typingInput.disabled = false; // Enables the input box.
+    typingInput.value = ''; // Clears the input field.
+    typingInput.focus(); // Automatically focuses on the input box.
+    resetBtn.disabled = false; // Enables the reset button.
+    updateTimerDisplay(); // Updates the timer display.
+}
+
+// Event listener for changing duration and starting a test.
+document.getElementById('duration').addEventListener('change', function () {
+    selectedDuration = parseInt(this.value); // Updates the selected duration based on user input.
+    timeLeft = selectedDuration * 60; // Resets the time left based on the new duration.
+    startTypingTest(); // Starts the typing test automatically when duration is selected.
+    updateTimerDisplay(); // Updates the displayed timer with the new duration.
+});
+
+// Function to start the typing test.
+function startTypingTest() {
+    if (!isTestRunning) {
+        typingInput.disabled = false; // Enables the input box for typing.
+        typingInput.focus(); // Automatically focuses on the input box.
+        resetBtn.disabled = false; // Enables the reset button.
+        currentTextIndex = 0; // Reset to the first paragraph.
+        totalWordsTyped = 0; // Resets the total words typed.
+        correctWords = 0; // Resets the count of correct words.
+        incorrectWords = 0; // Resets the count of incorrect words.
+        textToTypeElement.innerText = paragraphs[selectedDuration][currentTextIndex];
+        typingInput.value = ''; // Clears the input box.
+        timeLeft = selectedDuration * 60; // Resets the timer.
+        updateTimerDisplay(); // Updates the displayed timer.
+    }
+}
+
+// Timer logic.
+function startTimer() {
+    timerInterval = setInterval(function () {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            endTest();
+        }
+    }, 1000);
+}
+
+// Updates the timer display.
+function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60); // Calculates remaining minutes.
+    const seconds = timeLeft % 60; // Calculates remaining seconds.
+    timerElement.innerText = `Time Left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // Displays time in "MM:SS" format.
+}
+
+// Ends the typing test.
+function endTest() {
+    typingInput.disabled = true; // Disables the input box.
+    clearInterval(timerInterval); // Stops the timer.
+
+    // Calculate WPM based on total words typed and time elapsed.
+    const elapsedTime = selectedDuration * 60 - timeLeft; // Time elapsed in seconds.
+    const minutesElapsed = elapsedTime / 60; // Convert elapsed time to minutes.
+    const wordsPerMinute = totalWordsTyped / minutesElapsed; // Calculate WPM.
+
+    // Accuracy calculation based on correct and incorrect words.
+    const accuracy = (correctWords / (correctWords + incorrectWords)) * 100;
+
+    // Display WPM and accuracy.
+    wpmElement.innerText = `WPM: ${Math.round(wordsPerMinute)}`; // Updates WPM display.
+    accuracyElement.innerText = `Accuracy: ${Math.round(accuracy)}%`; // Updates accuracy display.
+}
+
+// Resets the typing test.
+function resetTest() {
+    console.log("Resetting test...");
+    clearInterval(timerInterval); // Stops any running timer.
+    timeLeft = selectedDuration * 60; // Resets the timer to the selected duration.
+    isTestRunning = false; // Marks the test as not running.
+    typingInput.value = ''; // Clears the input box.
+    currentTextIndex = 0; // Reset to the first paragraph.
+    textToTypeElement.innerText = paragraphs[selectedDuration][currentTextIndex];
+    wpmElement.innerText = 'WPM: 0'; // Resets WPM display.
+    accuracyElement.innerText = 'Accuracy: 0%'; // Resets accuracy display.
+    typingInput.disabled = false; // Re-enable typing input.
+    resetBtn.disabled = false; // Ensure the reset button stays enabled.
+    typingInput.focus(); // Focus on the input box.
+    updateTimerDisplay(); // Updates the timer display.
+    console.log("Test reset completed.");
+}
+
+// Handles typing input events.
+typingInput.addEventListener('input', function () {
+    if (!isTestRunning) {
+        startTimer();
+        isTestRunning = true;
+    }
+
+    const typedText = typingInput.value; // Gets the text typed by the user.
+    const currentText = paragraphs[selectedDuration][currentTextIndex];
+    totalWordsTyped = typedText.split(' ').length; // Updates word count.
+
+    correctWords = 0;
+    incorrectWords = 0;
+
+    textToTypeElement.innerHTML = ''; // Clears real-time feedback.
+
+    currentText.split('').forEach((char, index) => {
+        const charSpan = document.createElement('span');
+        if (typedText[index] === char) {
+            charSpan.classList.add('correct'); // Marks correctly typed characters.
+        } else if (typedText[index] !== undefined) {
+            charSpan.classList.add('incorrect'); // Marks incorrectly typed characters.
+        }
+        charSpan.innerText = char === ' ' ? ' ' : char;
+        textToTypeElement.appendChild(charSpan);
+    });
+
+    for (let i = 0; i < typedText.length; i++) {
+        if (typedText[i] === currentText[i]) {
+            correctWords++;
+        } else {
+            incorrectWords++;
+        }
+    }
+
+    const elapsedTime = selectedDuration * 60 - timeLeft; // Time elapsed in seconds.
+    const minutesElapsed = elapsedTime / 60; // Convert elapsed time to minutes.
+    const wordsPerMinute = totalWordsTyped / minutesElapsed; // Calculate WPM.
+    const accuracy = (correctWords / (correctWords + incorrectWords)) * 100;
+
+    wpmElement.innerText = `WPM: ${Math.round(wordsPerMinute)}`;
+    accuracyElement.innerText = `Accuracy: ${Math.round(accuracy)}%`;
+
+    if (typedText === currentText) {
+        currentTextIndex++;
+        if (currentTextIndex < paragraphs[selectedDuration].length) {
+            textToTypeElement.innerText = paragraphs[selectedDuration][currentTextIndex];
+            typingInput.value = '';
+        } else {
+            endTest();
+        }
+    }
+});
+
+// Dark mode toggle functionality.
+const darkModeToggle = document.getElementById('darkModeToggle');
+darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const currentMode = document.body.classList.contains('dark-mode') ? 'Light' : 'Dark';
+    darkModeToggle.textContent = currentMode;
+});
+
+// Initialize default test on page load.
+window.onload = initializeDefaultTest;
+
+// Attach event listener to reset button.
+resetBtn.addEventListener('click', resetTest);
+
+</script>
+</body>
+</html>
